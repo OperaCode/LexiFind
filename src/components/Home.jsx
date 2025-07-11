@@ -41,12 +41,20 @@ const Home = () => {
       }
     } catch (error) {
       console.error("Error fetching definition:", error);
-      toast.error("Word not found or error fetching definition", { autoClose: 3000 });
+      toast.error("Word not found or error fetching definition", {
+        autoClose: 3000,
+      });
     }
   };
 
   const fetchRandomWordOfTheDay = async () => {
-    const words = ["serendipity", "eloquent", "resilience", "ephemeral", "sonder"];
+    const words = [
+      "serendipity",
+      "eloquent",
+      "resilience",
+      "ephemeral",
+      "sonder",
+    ];
     const random = words[Math.floor(Math.random() * words.length)];
     setWotdLoading(true);
     await fetchDefinition(random, true);
@@ -67,7 +75,6 @@ const Home = () => {
   const clearForm = () => {
     setWord("");
     setDefinition(null);
-   
   };
 
   const goBack = () => {
@@ -80,19 +87,26 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-gradient-to-br from-green-400 via-teal-300 to-blue-400 px-4 py-8">
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+      className="min-h-screen flex flex-col items-center bg-gradient-to-br from-green-400 via-teal-300 to-blue-400 px-4 py-8"
+    >
       {/* Header with Mascot */}
       <header className="w-full py-4 px-6 flex justify-between items-center bg-white/10 backdrop-blur-md sticky top-0 z-10">
         <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-          <span role="img" aria-label="Mascot" className="animate-wiggle">🦉</span>
+          <span role="img" aria-label="Mascot" className="animate-wiggle">
+            🦉
+          </span>
           LexiFind
         </h1>
         <nav>
           <button
             type="button"
             onClick={goBack}
-            className="text-white font-medium px-4 py-2 rounded-lg hover:bg-white/20 transition duration-300"
-            aria-label="Back to home page"
+            className="text-white font-medium px-4 py-2 rounded-lg hover:bg-white/20 transition duration-300 cursor-pointer"
+            
           >
             Back to Home
           </button>
@@ -101,7 +115,12 @@ const Home = () => {
 
       <section className="md:flex justify-around m-auto w-full">
         {/* Word of the Day */}
-        <div className="bg-white/90 h-2/3 backdrop-blur-md rounded-xl shadow-lg p-4 mt-8 w-full max-w-md animate-fadeIn">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ delay: 0.9, duration: 0.6 }}
+          className="bg-white/90 h-2/3 backdrop-blur-md rounded-xl shadow-lg p-4 mt-8 w-full max-w-md animate-fadeIn"
+        >
           <h2 className="text-xl font-bold text-green-700 flex items-center gap-2 mb-2">
             <Sparkles size={20} />
             Word of the Day
@@ -119,7 +138,7 @@ const Home = () => {
               {wordOfTheDay.phonetics[0]?.audio && (
                 <button
                   onClick={() => playAudio(wordOfTheDay.phonetics[0].audio)}
-                  className="text-green-600 hover:text-green-800 transition"
+                  className="text-green-600 cursor-pointer hover:text-green-800 transition"
                   aria-label="Play pronunciation"
                 >
                   <Volume2 size={20} />
@@ -130,9 +149,11 @@ const Home = () => {
               </p>
             </>
           ) : (
-            <p className="text-gray-500 italic">Click "Surprise Me" to see today's word!</p>
+            <p className="text-gray-500 italic">
+              Click "Surprise Me" to see today's word!
+            </p>
           )}
-        </div>
+        </motion.div>
 
         {/* Main Form */}
         <form
@@ -140,10 +161,15 @@ const Home = () => {
           className="bg-white/90 backdrop-blur-md rounded-xl shadow-xl p-6 w-full max-w-md space-y-6 mt-8 animate-fadeIn"
           aria-label="Dictionary search form"
         >
-          <h2 className="text-2xl sm:text-3xl font-bold text-center text-green-700 flex items-center justify-center gap-2">
+          <motion.h2
+            initial={{ y: -20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            className="text-2xl sm:text-3xl font-bold text-center text-green-700 flex items-center justify-center gap-2"
+          >
             <Search size={28} className="animate-spin-slow" />
             Search Dictionary
-          </h2>
+          </motion.h2>
 
           {/* Search Input */}
           <div className="space-y-2">
@@ -171,11 +197,11 @@ const Home = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 disabled:bg-green-400 transition flex items-center justify-center gap-2"
-            aria-label="Search word meaning"
+            className="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 disabled:bg-green-400 transition flex items-center justify-center gap-2 cursor-pointer"
+            
           >
             {loading ? (
-              <Loader2 size={20} className="animate-spin" />
+              <Loader2 size={20} className="animate-spin-slow" />
             ) : (
               <>
                 <Search size={20} />
@@ -188,8 +214,8 @@ const Home = () => {
           <button
             type="button"
             onClick={fetchRandomWordOfTheDay}
-            className="w-full bg-teal-600 text-white font-semibold py-3 rounded-lg hover:bg-teal-700 transition flex items-center justify-center gap-2"
-            aria-label="Get a random word of the day"
+            className="w-full bg-teal-600 text-white cursor-pointer font-semibold py-3 rounded-lg hover:bg-teal-700 transition flex items-center justify-center gap-2"
+            
           >
             <Sparkles size={20} />
             Surprise Me
@@ -203,8 +229,8 @@ const Home = () => {
                 {definition.phonetics[0]?.audio && (
                   <button
                     onClick={() => playAudio(definition.phonetics[0].audio)}
-                    className="text-green-600 hover:text-green-800 transition"
-                    aria-label="Play pronunciation"
+                    className="text-green-600 hover:text-green-800 transition cursor-pointer"
+                   
                   >
                     <Volume2 size={20} />
                   </button>
@@ -284,12 +310,30 @@ const Home = () => {
       {/* Animation styles */}
       <style jsx="true">{`
         @keyframes wiggle {
-          0%, 100% { transform: rotate(-5deg); }
-          50% { transform: rotate(5deg); }
+          0%,
+          100% {
+            transform: rotate(-5deg);
+          }
+          50% {
+            transform: rotate(5deg);
+          }
         }
-        .animate-wiggle { animation: wiggle 2s ease-in-out infinite; }
+        .animate-wiggle {
+          animation: wiggle 2s ease-in-out infinite;
+        }
+          @keyframes spinSlow {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+        .animate-spin-slow {
+          animation: spinSlow 8s linear infinite;
+        }
       `}</style>
-    </div>
+    </motion.div>
   );
 };
 
